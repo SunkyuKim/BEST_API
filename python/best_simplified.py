@@ -1,13 +1,13 @@
 """
-.. module:: dmis.best
+.. module:: BEST
     :platform: Unix, linux, Windows
-.. moduleauthor:: Sunwon Lee <sun2208@gmail.com>
+.. moduleauthor:: Sunkyu Kim <sunkyu-kim@korea.ac.kr>
 
 ==================================
-Biomedical entity query API
+Biomedical entity query API v2
 ==================================
 
-.. note:: Usage: Biomedical entity query API
+.. note:: Usage: Biomedical entity query API (simplified)
 
 >>> from dmis import best
 >>>
@@ -48,64 +48,33 @@ class BESTQuery():
     besturl = "http://best.korea.ac.kr/s?"
 
 
-    def __init__(self, queryObj={"keywordA":"", "keywordB":[], "filterObjectName":"", "topN":20, "noAbsTxt":True}):
+    def __init__(self, query, filterObjectName="All Entity?", topN=20, noAbsTxt=True):
         """BESTQuery
-        :param queryObj: keywordA (list), keywordB (list), filterObjectName (string), topN (int) dict return.
+        :param queryObj: keywordA (list), filterObjectName (string), topN (int) dict return.
 
-        >>> query = BESTQuery({"keywordA":["cancer"], "keywordB":["human breast", "BRCA1"], "filterObjectName":"", "topN":30, "noAbsTxt":False})
+        >>> query = BESTQuery({"keywordA":["cancer"], "BRCA1"], "filterObjectName":"", "topN":30, "noAbsTxt":False})
         >>> # result of query will include abstract text.
         """
 
-        if queryObj["keywordA"] == None:
-            queryObj["keywordA"] = [""]
+        self.query = query
+        self.filterObjectName = filterObjectName
+        self.topN = topN
+        self.noAbsTxt = noAbsTxt
 
-        if len(queryObj["keywordA"]) == 0:
-            queryObj["keywordA"] = [""]
+    def setQuery (self, query):
+        """Setting the query
 
-        if type(queryObj["keywordA"]) is not list:
-            queryObj["keywordA"] = [queryObj["keywordA"]]
+        :param keyword: a string object
 
-        if (type(queryObj["keywordA"]) is not list) or ("keywordB" not in queryObj) or (type(queryObj["keywordB"]) is not list) or("filterObjectName" not in queryObj) or ("topN" not in queryObj):
-            print ("Initialize error : invalid query object, query object should contains 'keywordA (list of string)', 'keywordB (list of string)', 'fileterObjectName (string)', 'topN (integer)'")
-            print (queryObj)
-
-        if (queryObj["filterObjectName"] == None) or (len(queryObj["filterObjectName"]) == 0):
-            queryObj["filterObjectName"] = ""
-
-        for keya in queryObj["keywordA"] :
-            if type(keya) is not str :
-                print ("Initialize error : invalid keywordA. keywordA should be either None, empty list or list of string")
-                print (queryObj["keywordA"])
-
-        for keyb in queryObj["keywordB"] :
-            if type(keyb) is not str :
-                print ("Initialize error : invalid keywordB. keywordB should be list of string")
-                print (queryObj["keywordB"])
-
-        if "noAbsTxt" not in queryObj :
-            queryObj["noAbsTxt"] = True
-
-
-        self.keywordA = queryObj["keywordA"]
-        self.keywordB = queryObj["keywordB"]
-        self.filterObjectName = queryObj["filterObjectName"]
-        self.topN = queryObj["topN"]
-        self.noAbsTxt = queryObj["noAbsTxt"]
-
-    def setKeywordA (self, keywords):
-        """Setting the primary keywords (Keyword A)
-
-        :param keyword: primary keywords, which must be a list of str
-
-        >>> query.setKeywordA(["cancer"])
+        >>> query.setQuery(["cancer"])
         """
-        if type(keywords) is not list:
-            print ("Initialize error : invalid keywordA. keywordA should be list of string")
-            print (keywords)
+        if type(query) is not str:
+            print ("Initialize error : invalid query. It should be a string object.")
+            print (query)
             return
 
-        if len(keywords) == 0:
-            keywords = [""]
+        if len(query) == 0:
+            query = [""]
             return
 
         for keya in keywords :
@@ -153,90 +122,18 @@ class BESTQuery():
         """
         self.keywordB.remove(keyword)
 
-    def setKeywordB (self, keywords):
-        """Setting the secondary keywords (Keyword B)
-
-        :param keywords: the secondary keywords, which must be a list of str
-
-        >>> keywordB = ["breast cancer","BRCA1"]
-        >>> query.setKeywordB(keywordB)
-        """
-
-        if type(keywords) is not list:
-            print ("Initialize error : invalid keywordB. keywordB should be list of string")
-            print (keywords)
-            return
-
-        for keyb in keywords :
-            if type(keyb) is not str :
-                print ("Initialize error : invalid keywordB. keywordB should be list of string")
-                print (keywords)
-                return
-
-        if type(keywords) is list:
-            self.keywordB = keywords
-        else :
-            print ("Warning! keywords should be list type : " + str(keywords))
-
     def isValid(self):
         if self.keywordA is not None and self.keywordA is not None and type(self.keywordA) is not list:
-            return False
-
-        if type(self.keywordB) is not list:
             return False
 
         for keya in self.keywordA :
             if type(keya) is not str :
                 return False
 
-        for keyb in self.keywordB :
-            if type(keyb) is not str :
-                return False
-
-        if len(self.keywordB) == 0:
-            return False
-
         if self.topN <= 0:
             return False
 
         return True
-
-    def getKeywordB (self):
-        """Getting the secondary keywords (Keyword B)
-
-        :return: list of keyword B string
-
-        >>> keywordB = query.getKeywordB()
-        >>> print (keywordB)
-        ["breast cancer","BRCA1"]
-        """
-        return self.keywordB
-
-    def addKeywordtoB (self, keyword):
-        """Adding a keyword to the secondary keyword list (Keyword B)
-
-        :param keyword: the keyword to be added to the secondary keyword list
-
-        >>> print (query.getKeywordB())
-        ["breast cancer","BRCA1"]
-        >>> query.addKeywordtoB("EGFR")
-        >>> print (query.getKeywordB())
-        ["breast cancer","BRCA1","EGFR"]
-        """
-        self.keywordB.append(keyword)
-
-    def removeKeywordfromB(self, keyword):
-        """Removing a keyword from the secondary keyword list (Keyword B)
-
-        :param keyword: the keyword to be removed from the secondary keyword list
-
-        >>> print (query.getKeywordB())
-        ["breast cancer","BRCA1","EGFR"]
-        >>> query.removeKeywordfromB("EGFR")
-        >>> print (query.getKeywordB())
-        ["breast cancer"]
-        """
-        self.keywordB.remove(keyword)
 
     def setTopN (self, n):
         """ Setting the number of results retrieved by query
@@ -327,14 +224,8 @@ class BESTQuery():
 
         return candidates
 
-    def makeQueryString(self, querytype):
-        paramKeywordA = reduce(lambda x, y: x + " OR " + y , map(lambda x:"(" + x + ")", self.keywordA))
-        paramKeywordB = reduce(lambda x, y: x + " OR " + y , map(lambda x:"(" + x + ")", self.keywordB))
-
-        queryKeywords = paramKeywordB
-
-        if paramKeywordA != "()" :
-            queryKeywords = "(" + queryKeywords + ") AND (" + paramKeywordA + ")"
+    def makeQueryString(self, querytype, abstract=True):
+        queryKeywords = reduce(lambda x, y: x + " OR " + y , map(lambda x:"(" + x + ")", self.keywordA))
 
         import urllib.parse
 
@@ -351,40 +242,15 @@ class BESTQuery():
         if otype == "":
             return "Invalid type! type can be [gene, pathway, disease]"
 
-        strQuery = self.besturl + "t=l&wt=xslt&tr=tmpl.xsl" + "&otype=" + otype + "&rows=" + str(self.topN) + "&" + queryKeywords
-
-        return strQuery
-
-    def makeQueryString_noAbsTxt(self, querytype):
-        paramKeywordA = reduce(lambda x, y: x + " OR " + y , map(lambda x:"(" + x + ")", self.keywordA))
-        paramKeywordB = reduce(lambda x, y: x + " OR " + y , map(lambda x:"(" + x + ")", self.keywordB))
-
-        queryKeywords = paramKeywordB
-
-        if paramKeywordA != "()" :
-            queryKeywords = "(" + queryKeywords + ") AND (" + paramKeywordA + ")"
-
-        import urllib.parse
-
-        queryKeywords = "q=" + urllib.parse.quote(queryKeywords)
-
-        otype = ""
-        if querytype == "gene":
-            otype = "8"
-        elif querytype == "pathway":
-            otype = "12"
-        elif querytype == "disease":
-            otype = "4"
-
-        if otype == "":
-            return "Invalid type! type can be [gene, pathway, disease]"
-
-        strQuery = self.besturl + "t=l&wt=xslt&tr=tmpl2.xsl" + "&otype=" + otype + "&rows=" + str(self.topN) + "&" + queryKeywords
+        if abstract:
+            strQuery = self.besturl + "t=l&wt=xslt&tr=tmpl.xsl" + "&otype=" + otype + "&rows=" + str(self.topN) + "&" + queryKeywords
+        else:
+            strQuery = self.besturl + "t=l&wt=xslt&tr=tmpl2.xsl" + "&otype=" + otype + "&rows=" + str(self.topN) + "&" + queryKeywords
 
         return strQuery
 
     def toDataObj(self):
-        return {"keywordA":self.keywordA, "keywordB":self.keywordB, "filterObjectName":self.filterObjectName, "topN":self.topN}
+        return {"keywordA":self.keywordA, "filterObjectName":self.filterObjectName, "topN":self.topN}
 
 def getRelevantBioEntities(bestQuery):
     """ Function for retrieval from BEST
@@ -409,7 +275,6 @@ def getRelevantBioEntities(bestQuery):
         print ("Query object is invalid. Please check the query")
         print ("Query : ")
         print ("   keywordA: " + str(bestQuery.keywordA))
-        print ("   keywordB: " + str(bestQuery.keywordB))
         print ("   topN: " + str(bestQuery.topN))
 
         return {"queryResult" : "invalid query", "genes":[], "pathways":[], "diseases":[]}
