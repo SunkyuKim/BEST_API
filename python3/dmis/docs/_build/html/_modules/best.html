@@ -1,0 +1,438 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>best &#8212; dmis  documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for best</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: BEST</span>
+<span class="sd">    :platform: Unix, linux, Windows</span>
+<span class="sd">.. moduleauthor:: Sunkyu Kim &lt;sunkyu-kim@korea.ac.kr&gt;</span>
+
+<span class="sd">==================================</span>
+<span class="sd">Biomedical entity query API v2</span>
+<span class="sd">==================================</span>
+
+<span class="sd">.. note:: Usage: Biomedical entity query API (simplified)</span>
+
+<span class="sd">API Description</span>
+<span class="sd">================</span>
+<span class="sd">This API is for use of BEST(Biomedical Entity Search Tool) in various purposes.</span>
+
+
+<span class="sd">All users can access BEST at : http:/best.korea.ac.kr/</span>
+
+<span class="sd">For bugs and inquiries, please contact: Jaewoo Kang(kangj@korea.ac.kr)</span>
+
+<span class="sd">Reference : https://doi.org/10.1371/journal.pone.0164680</span>
+
+
+<span class="sd">Examples</span>
+<span class="sd">==========</span>
+<span class="sd">To see ‘gene’s related ‘breast cancer’, use this sample code.</span>
+
+<span class="sd">&gt;&gt;&gt; bestQuery = best.BESTQuery(&quot;breast cancer&quot;,</span>
+<span class="sd">                                filterObjectName=&quot;gene&quot;,</span>
+<span class="sd">                                noAbsTxt=False)</span>
+<span class="sd">&gt;&gt;&gt; searchResult = best.getRelevantBioEntities(bestQuery)</span>
+<span class="sd">&gt;&gt;&gt; print(searchResult)</span>
+<span class="sd">[{  &#39;entityname&#39; : &#39;ERBB2&#39;,</span>
+<span class="sd">    &#39;score&#39; : 8098.43,</span>
+<span class="sd">    &#39;abstracts&#39; : [</span>
+<span class="sd">                &#39;Molecular-based cancer tests...&#39;,</span>
+<span class="sd">                &#39;The molecular subtype of breast...&#39;</span>
+<span class="sd">                &#39;Breast cancer is the second leading cause of...&#39;],</span>
+<span class="sd">    &#39;numArticles&#39;:14537</span>
+<span class="sd">    &#39;rank&#39; : 1},</span>
+<span class="sd"> {  &#39;entityname&#39; : &#39;ESR1&#39;,</span>
+<span class="sd">    &#39;score&#39; : 7340.54,</span>
+<span class="sd">    &#39;abstracts&#39; : [</span>
+<span class="sd">                &#39;Several studies have shown that mammographic..&#39;,</span>
+<span class="sd">                &#39;A shift towards less burdening and more...&#39;</span>
+<span class="sd">                &#39;The complete molecular basis of the organ-...&#39;],</span>
+<span class="sd">    &#39;numArticles&#39;:18084</span>
+<span class="sd">    &#39;rank&#39; : 2},</span>
+<span class="sd">    ...</span>
+<span class="sd">]</span>
+
+<span class="sd">Changing noAbsTxt=True can make the process faster.</span>
+
+<span class="sd">&gt;&gt;&gt; bestQuery = best.BESTQuery(&quot;breast cancer&quot;,</span>
+<span class="sd">                                filterObjectName=&quot;gene&quot;,</span>
+<span class="sd">                                noAbsTxt=True)</span>
+<span class="sd">&gt;&gt;&gt; searchResult = best.getRelevantBioEntities(bestQuery)</span>
+<span class="sd">&gt;&gt;&gt; print(searchResult)</span>
+<span class="sd">[{  &#39;entityname&#39; : &#39;ERBB2&#39;,</span>
+<span class="sd">    &#39;score&#39; : 8098.43,</span>
+<span class="sd">    &#39;abstracts&#39; : [],</span>
+<span class="sd">    &#39;numArticles&#39;:14537</span>
+<span class="sd">    &#39;rank&#39; : 1},</span>
+<span class="sd"> {  &#39;entityname&#39; : &#39;ESR1&#39;,</span>
+<span class="sd">    &#39;score&#39; : 7340.54,</span>
+<span class="sd">    &#39;abstracts&#39; : [],</span>
+<span class="sd">    &#39;numArticles&#39;:18084</span>
+<span class="sd">    &#39;rank&#39; : 2},</span>
+<span class="sd">    ...</span>
+<span class="sd">]</span>
+
+<span class="sd">If you want to see other entity types, change filterObjectName.</span>
+
+<span class="sd">.. note:: Total 10 filterObjects(entity types) are available.</span>
+
+<span class="sd"> * gene</span>
+<span class="sd"> * drug</span>
+<span class="sd"> * chemical compound</span>
+<span class="sd"> * target</span>
+<span class="sd"> * disease</span>
+<span class="sd"> * toxin</span>
+<span class="sd"> * transcription factor</span>
+<span class="sd"> * mirna</span>
+<span class="sd"> * pathway</span>
+<span class="sd"> * mutation</span>
+
+<span class="sd">&gt;&gt;&gt; bestQuery = best.BESTQuery(&quot;breast cancer&quot;,</span>
+<span class="sd">                                filterObjectName=&quot;drug&quot;,</span>
+<span class="sd">                                noAbsTxt=True)</span>
+<span class="sd">&gt;&gt;&gt; searchResult = best.getRelevantBioEntities(bestQuery)</span>
+<span class="sd">&gt;&gt;&gt; print(searchResult)</span>
+<span class="sd">[{  &#39;entityname&#39; : &#39;tamoxifen&#39;,</span>
+<span class="sd">    &#39;score&#39; : 3208.687,</span>
+<span class="sd">    &#39;abstracts&#39; : [],</span>
+<span class="sd">    &#39;numArticles&#39;:10583</span>
+<span class="sd">    &#39;rank&#39; : 1},</span>
+<span class="sd"> {  &#39;entityname&#39; : &#39;doxorubicin&#39;,</span>
+<span class="sd">    &#39;score&#39; : 1639.867,</span>
+<span class="sd">    &#39;abstracts&#39; : [],</span>
+<span class="sd">    &#39;numArticles&#39;:6074</span>
+<span class="sd">    &#39;rank&#39; : 2},</span>
+<span class="sd">    ...</span>
+<span class="sd">]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">http</span>
+<span class="c1">#from http.client import HTTPException</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<div class="viewcode-block" id="BESTQuery"><a class="viewcode-back" href="../best.html#best.BESTQuery">[docs]</a><span class="k">class</span> <span class="nc">BESTQuery</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BESTQuery class is basic query object for BEST API.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__besturl</span> <span class="o">=</span> <span class="s2">&quot;http://best.korea.ac.kr/s?&quot;</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querystr</span><span class="p">,</span> <span class="n">filterObjectName</span><span class="o">=</span><span class="s2">&quot;All Entity Type&quot;</span><span class="p">,</span> <span class="n">topN</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">noAbsTxt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;BESTQuery</span>
+<span class="sd">        :param querystr, filterObjectName : result type, topN, noAbsTxt : if True, the result doesn&#39;t include the abstract texts.</span>
+<span class="sd">.</span>
+<span class="sd">        &gt;&gt;&gt; query = BESTQuery(&quot;lung cancer&quot;, filterObjectName=&quot;gene&quot;, topN=10, noAbsTxt=False)</span>
+<span class="sd">        &gt;&gt;&gt; # 10 genes related with lung cancer is searched including the abstract texts.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">querystr</span> <span class="o">=</span> <span class="n">querystr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterObjectName</span> <span class="o">=</span> <span class="n">filterObjectName</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topN</span> <span class="o">=</span> <span class="n">topN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noAbsTxt</span> <span class="o">=</span> <span class="n">noAbsTxt</span>
+
+<div class="viewcode-block" id="BESTQuery.setQuerystr"><a class="viewcode-back" href="../best.html#best.BESTQuery.setQuerystr">[docs]</a>    <span class="k">def</span> <span class="nf">setQuerystr</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">querystr</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Setting the query</span>
+
+<span class="sd">        :param querystr: a string object</span>
+
+<span class="sd">        &gt;&gt;&gt; query.setQuery([&quot;cancer&quot;])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">querystr</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Initialize error : invalid query. It should be a string object.&quot;</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="n">querystr</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">querystr</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">querystr</span> <span class="o">=</span> <span class="n">querystr</span></div>
+
+<div class="viewcode-block" id="BESTQuery.getQuerystr"><a class="viewcode-back" href="../best.html#best.BESTQuery.getQuerystr">[docs]</a>    <span class="k">def</span> <span class="nf">getQuerystr</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Getting the query String</span>
+
+<span class="sd">        :return: A string</span>
+
+<span class="sd">        &gt;&gt;&gt; querystr = query.getQuerystr()</span>
+<span class="sd">        &gt;&gt;&gt; print (querystr)</span>
+<span class="sd">        [&quot;cancer&quot;]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">querystr</span></div>
+
+    <span class="k">def</span> <span class="nf">_isValid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">querystr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">querystr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">querystr</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">keya</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">querystr</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">keya</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span> <span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">topN</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="BESTQuery.setTopN"><a class="viewcode-back" href="../best.html#best.BESTQuery.setTopN">[docs]</a>    <span class="k">def</span> <span class="nf">setTopN</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Setting the number of results retrieved by query</span>
+
+<span class="sd">        :param n: the number of results to be retrieved</span>
+
+<span class="sd">        &gt;&gt;&gt; query.setTopN(100)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topN</span> <span class="o">=</span> <span class="n">n</span></div>
+
+<div class="viewcode-block" id="BESTQuery.getTopN"><a class="viewcode-back" href="../best.html#best.BESTQuery.getTopN">[docs]</a>    <span class="k">def</span> <span class="nf">getTopN</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Getting the number of results retrieved by query</span>
+
+<span class="sd">        :return: the number of results to be retrieved</span>
+
+<span class="sd">        &gt;&gt;&gt; print (query.getTopN())</span>
+<span class="sd">        100</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">topN</span></div>
+
+<div class="viewcode-block" id="BESTQuery.setFilterObjectName"><a class="viewcode-back" href="../best.html#best.BESTQuery.setFilterObjectName">[docs]</a>    <span class="k">def</span> <span class="nf">setFilterObjectName</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oname</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Setting the filtering object.</span>
+<span class="sd">        Total 10 types are available.</span>
+
+<span class="sd">         * gene</span>
+<span class="sd">         * drug</span>
+<span class="sd">         * chemical compound</span>
+<span class="sd">         * target</span>
+<span class="sd">         * disease</span>
+<span class="sd">         * toxin</span>
+<span class="sd">         * transcription factor</span>
+<span class="sd">         * mirna</span>
+<span class="sd">         * pathway</span>
+<span class="sd">         * mutation</span>
+
+<span class="sd">        &gt;&gt;&gt; qeury.setFilterObjectName(&quot;Gene&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterObjectName</span> <span class="o">=</span> <span class="n">oname</span></div>
+
+<div class="viewcode-block" id="BESTQuery.getFilterObjectName"><a class="viewcode-back" href="../best.html#best.BESTQuery.getFilterObjectName">[docs]</a>    <span class="k">def</span> <span class="nf">getFilterObjectName</span> <span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Getting the filtering entity type.</span>
+
+<span class="sd">        &gt;&gt;&gt; print(query.getFilterObjectName())</span>
+<span class="sd">        &quot;breast cancer&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filterObjectName</span></div>
+
+<div class="viewcode-block" id="BESTQuery.makeQueryString"><a class="viewcode-back" href="../best.html#best.BESTQuery.makeQueryString">[docs]</a>    <span class="k">def</span> <span class="nf">makeQueryString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">queryKeywords</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">querystr</span>
+        <span class="n">querytype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filterObjectName</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">noAbsTxt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">noAbsTxt</span>
+
+        <span class="kn">import</span> <span class="nn">urllib.parse</span>
+
+        <span class="n">queryKeywords</span> <span class="o">=</span> <span class="s2">&quot;q=&quot;</span> <span class="o">+</span> <span class="n">urllib</span><span class="o">.</span><span class="n">parse</span><span class="o">.</span><span class="n">quote</span><span class="p">(</span><span class="n">queryKeywords</span><span class="p">)</span>
+
+        <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;8&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;drug&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;5&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;chemical compound&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;target&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;14&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;disease&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;4&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;toxin&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;15&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;transcription factor&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;16&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;mirna&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;10&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;pathway&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;12&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;mutation&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;17&quot;</span>
+        <span class="k">elif</span> <span class="n">querytype</span> <span class="o">==</span> <span class="s2">&quot;all entity type&quot;</span><span class="p">:</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Invalid type! Object type : All Entity Type&quot;</span><span class="p">)</span>
+            <span class="n">otype</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">noAbsTxt</span><span class="p">:</span>
+            <span class="n">strQuery</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__besturl</span> <span class="o">+</span> <span class="s2">&quot;t=l&amp;wt=xslt&amp;tr=tmpl2.xsl&quot;</span> <span class="o">+</span> <span class="s2">&quot;&amp;otype=&quot;</span> <span class="o">+</span> <span class="n">otype</span> <span class="o">+</span> <span class="s2">&quot;&amp;rows=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topN</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&amp;&quot;</span> <span class="o">+</span> <span class="n">queryKeywords</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">strQuery</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__besturl</span> <span class="o">+</span> <span class="s2">&quot;t=l&amp;wt=xslt&amp;tr=tmpl.xsl&quot;</span> <span class="o">+</span> <span class="s2">&quot;&amp;otype=&quot;</span> <span class="o">+</span> <span class="n">otype</span> <span class="o">+</span> <span class="s2">&quot;&amp;rows=&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topN</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&amp;&quot;</span> <span class="o">+</span> <span class="n">queryKeywords</span>
+
+        <span class="k">return</span> <span class="n">strQuery</span></div>
+
+<div class="viewcode-block" id="BESTQuery.toDataObj"><a class="viewcode-back" href="../best.html#best.BESTQuery.toDataObj">[docs]</a>    <span class="k">def</span> <span class="nf">toDataObj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;query&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">querystr</span><span class="p">,</span> <span class="s2">&quot;filterObjectName&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">filterObjectName</span><span class="p">,</span> <span class="s2">&quot;topN&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">topN</span><span class="p">}</span></div></div>
+
+<div class="viewcode-block" id="getRelevantBioEntities"><a class="viewcode-back" href="../best.html#best.getRelevantBioEntities">[docs]</a><span class="k">def</span> <span class="nf">getRelevantBioEntities</span><span class="p">(</span><span class="n">bestQuery</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Function for retrieval from BEST</span>
+
+<span class="sd">    :param bestQuery: BESTQuery</span>
+
+<span class="sd">    :return: parsed objects (dict-BIOENTITY).</span>
+
+<span class="sd">    * BIOENTITY (dict): {&quot;entityName&quot;:str, &quot;rank&quot;:int, &quot;score&quot;:float, &quot;numArticles&quot;:int, &quot;abstracts&quot;:[str]}</span>
+
+<span class="sd">    &gt;&gt;&gt; bestQuery = BESTQuery(  &quot;lung cancer&quot;,</span>
+<span class="sd">                                filterObjectName=&quot;gene&quot;,</span>
+<span class="sd">                                topN=10,</span>
+<span class="sd">                                noAbsTxt=True   )</span>
+<span class="sd">    &gt;&gt;&gt; relevantEntities = getRelevantBioEntities(bestQuery)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">bestQuery</span><span class="p">)</span> <span class="ow">is</span> <span class="n">BESTQuery</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;query is invalid! please check your query object.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bestQuery</span><span class="o">.</span><span class="n">_isValid</span><span class="p">()</span> <span class="p">:</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Query object is invalid. Please check the query&quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Query : &quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;   query: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">bestQuery</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;   topN: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">bestQuery</span><span class="o">.</span><span class="n">topN</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">urlquery</span> <span class="o">=</span> <span class="n">bestQuery</span><span class="o">.</span><span class="n">makeQueryString</span><span class="p">()</span>
+
+    <span class="kn">import</span> <span class="nn">urllib.request</span>
+
+    <span class="n">resultStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">again</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">again</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">urlquery</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">,</span> <span class="s1">&#39;Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)&#39;</span><span class="p">)</span>
+
+            <span class="n">geneUrl</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">resultStr</span> <span class="o">=</span> <span class="n">geneUrl</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="n">again</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">except</span> <span class="n">http</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">BadStatusLine</span><span class="p">:</span>
+            <span class="n">again</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="n">http</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">HTTPException</span><span class="p">:</span>
+            <span class="n">again</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+            <span class="n">again</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="n">again</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">URLError</span><span class="p">:</span>
+            <span class="n">again</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">again</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">again</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Network status is not good&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">__makeDataFromBestQueryResult</span><span class="p">(</span><span class="n">resultStr</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+<span class="k">def</span> <span class="nf">__makeDataFromBestQueryResult</span><span class="p">(</span><span class="n">resultStr</span><span class="p">):</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">resultStr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">linesCnt</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="n">resultDataArr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">curData</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rank&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">linesCnt</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;@@@&quot;</span><span class="p">):</span>
+            <span class="n">curData</span><span class="p">[</span><span class="s2">&quot;abstracts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span> <span class="n">curData</span><span class="p">[</span><span class="s2">&quot;rank&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">resultDataArr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curData</span><span class="p">)</span>
+
+            <span class="n">dataResult</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; | &quot;</span><span class="p">)</span>
+
+            <span class="n">curData</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;rank&quot;</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">dataResult</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span> <span class="s2">&quot;entityName&quot;</span><span class="p">:</span><span class="n">dataResult</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="s2">&quot;score&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">(</span><span class="n">dataResult</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span> <span class="s2">&quot;numArticles&quot;</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">dataResult</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span> <span class="s2">&quot;abstracts&quot;</span><span class="p">:[]}</span>
+
+    <span class="n">resultDataArr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">curData</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">resultDataArr</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

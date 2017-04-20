@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>best module &#8212; dmis  documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to dmis’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-best">
+<span id="best-module"></span><h1>best module<a class="headerlink" href="#module-best" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-BEST"></span><div class="section" id="biomedical-entity-query-api-v2">
+<h2>Biomedical entity query API v2<a class="headerlink" href="#biomedical-entity-query-api-v2" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Usage: Biomedical entity query API (simplified)</p>
+</div>
+<div class="section" id="api-description">
+<h3>API Description<a class="headerlink" href="#api-description" title="Permalink to this headline">¶</a></h3>
+<p>This API is for use of BEST(Biomedical Entity Search Tool) in various purposes.</p>
+<p>All users can access BEST at : <a class="reference external" href="http:/best.korea.ac.kr/">http:/best.korea.ac.kr/</a></p>
+<p>For bugs and inquiries, please contact: Jaewoo Kang(<a class="reference external" href="mailto:kangj&#37;&#52;&#48;korea&#46;ac&#46;kr">kangj<span>&#64;</span>korea<span>&#46;</span>ac<span>&#46;</span>kr</a>)</p>
+<p>Reference : <a class="reference external" href="https://doi.org/10.1371/journal.pone.0164680">https://doi.org/10.1371/journal.pone.0164680</a></p>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>To see ‘gene’s related ‘breast cancer’, use this sample code.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bestQuery</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">BESTQuery</span><span class="p">(</span><span class="s2">&quot;breast cancer&quot;</span><span class="p">,</span>
+<span class="go">                                filterObjectName=&quot;gene&quot;,</span>
+<span class="go">                                noAbsTxt=False)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">searchResult</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">getRelevantBioEntities</span><span class="p">(</span><span class="n">bestQuery</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">searchResult</span><span class="p">)</span>
+<span class="go">[{  &#39;entityname&#39; : &#39;ERBB2&#39;,</span>
+<span class="go">    &#39;score&#39; : 8098.43,</span>
+<span class="go">    &#39;abstracts&#39; : [</span>
+<span class="go">                &#39;Molecular-based cancer tests...&#39;,</span>
+<span class="go">                &#39;The molecular subtype of breast...&#39;</span>
+<span class="go">                &#39;Breast cancer is the second leading cause of...&#39;],</span>
+<span class="go">    &#39;numArticles&#39;:14537</span>
+<span class="go">    &#39;rank&#39; : 1},</span>
+<span class="go"> {  &#39;entityname&#39; : &#39;ESR1&#39;,</span>
+<span class="go">    &#39;score&#39; : 7340.54,</span>
+<span class="go">    &#39;abstracts&#39; : [</span>
+<span class="go">                &#39;Several studies have shown that mammographic..&#39;,</span>
+<span class="go">                &#39;A shift towards less burdening and more...&#39;</span>
+<span class="go">                &#39;The complete molecular basis of the organ-...&#39;],</span>
+<span class="go">    &#39;numArticles&#39;:18084</span>
+<span class="go">    &#39;rank&#39; : 2},</span>
+<span class="go">    ...</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p>Changing noAbsTxt=True can make the process faster.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bestQuery</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">BESTQuery</span><span class="p">(</span><span class="s2">&quot;breast cancer&quot;</span><span class="p">,</span>
+<span class="go">                                filterObjectName=&quot;gene&quot;,</span>
+<span class="go">                                noAbsTxt=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">searchResult</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">getRelevantBioEntities</span><span class="p">(</span><span class="n">bestQuery</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">searchResult</span><span class="p">)</span>
+<span class="go">[{  &#39;entityname&#39; : &#39;ERBB2&#39;,</span>
+<span class="go">    &#39;score&#39; : 8098.43,</span>
+<span class="go">    &#39;abstracts&#39; : [],</span>
+<span class="go">    &#39;numArticles&#39;:14537</span>
+<span class="go">    &#39;rank&#39; : 1},</span>
+<span class="go"> {  &#39;entityname&#39; : &#39;ESR1&#39;,</span>
+<span class="go">    &#39;score&#39; : 7340.54,</span>
+<span class="go">    &#39;abstracts&#39; : [],</span>
+<span class="go">    &#39;numArticles&#39;:18084</span>
+<span class="go">    &#39;rank&#39; : 2},</span>
+<span class="go">    ...</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<p>If you want to see other entity types, change filterObjectName.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Total 10 filterObjects(entity types) are available.</p>
+<ul class="last simple">
+<li>gene</li>
+<li>drug</li>
+<li>chemical compound</li>
+<li>target</li>
+<li>disease</li>
+<li>toxin</li>
+<li>transcription factor</li>
+<li>mirna</li>
+<li>pathway</li>
+<li>mutation</li>
+</ul>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bestQuery</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">BESTQuery</span><span class="p">(</span><span class="s2">&quot;breast cancer&quot;</span><span class="p">,</span>
+<span class="go">                                filterObjectName=&quot;drug&quot;,</span>
+<span class="go">                                noAbsTxt=True)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">searchResult</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">getRelevantBioEntities</span><span class="p">(</span><span class="n">bestQuery</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">searchResult</span><span class="p">)</span>
+<span class="go">[{  &#39;entityname&#39; : &#39;tamoxifen&#39;,</span>
+<span class="go">    &#39;score&#39; : 3208.687,</span>
+<span class="go">    &#39;abstracts&#39; : [],</span>
+<span class="go">    &#39;numArticles&#39;:10583</span>
+<span class="go">    &#39;rank&#39; : 1},</span>
+<span class="go"> {  &#39;entityname&#39; : &#39;doxorubicin&#39;,</span>
+<span class="go">    &#39;score&#39; : 1639.867,</span>
+<span class="go">    &#39;abstracts&#39; : [],</span>
+<span class="go">    &#39;numArticles&#39;:6074</span>
+<span class="go">    &#39;rank&#39; : 2},</span>
+<span class="go">    ...</span>
+<span class="go">]</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="best.BESTQuery">
+<em class="property">class </em><code class="descclassname">best.</code><code class="descname">BESTQuery</code><span class="sig-paren">(</span><em>querystr</em>, <em>filterObjectName='All Entity Type'</em>, <em>topN=20</em>, <em>noAbsTxt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>BESTQuery class is basic query object for BEST API.</p>
+<dl class="method">
+<dt id="best.BESTQuery.getFilterObjectName">
+<code class="descname">getFilterObjectName</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.getFilterObjectName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.getFilterObjectName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting the filtering entity type.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">getFilterObjectName</span><span class="p">())</span>
+<span class="go">&quot;breast cancer&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="best.BESTQuery.getQuerystr">
+<code class="descname">getQuerystr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.getQuerystr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.getQuerystr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting the query String</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">querystr</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">getQuerystr</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">querystr</span><span class="p">)</span>
+<span class="go">[&quot;cancer&quot;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="best.BESTQuery.getTopN">
+<code class="descname">getTopN</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.getTopN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.getTopN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getting the number of results retrieved by query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the number of results to be retrieved</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">getTopN</span><span class="p">())</span>
+<span class="go">100</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="best.BESTQuery.makeQueryString">
+<code class="descname">makeQueryString</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.makeQueryString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.makeQueryString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="best.BESTQuery.setFilterObjectName">
+<code class="descname">setFilterObjectName</code><span class="sig-paren">(</span><em>oname</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.setFilterObjectName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.setFilterObjectName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting the filtering object.
+Total 10 types are available.</p>
+<blockquote>
+<div><ul class="simple">
+<li>gene</li>
+<li>drug</li>
+<li>chemical compound</li>
+<li>target</li>
+<li>disease</li>
+<li>toxin</li>
+<li>transcription factor</li>
+<li>mirna</li>
+<li>pathway</li>
+<li>mutation</li>
+</ul>
+</div></blockquote>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qeury</span><span class="o">.</span><span class="n">setFilterObjectName</span><span class="p">(</span><span class="s2">&quot;Gene&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="best.BESTQuery.setQuerystr">
+<code class="descname">setQuerystr</code><span class="sig-paren">(</span><em>querystr</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.setQuerystr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.setQuerystr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting the query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>querystr</strong> &#8211; a string object</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">setQuery</span><span class="p">([</span><span class="s2">&quot;cancer&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="best.BESTQuery.setTopN">
+<code class="descname">setTopN</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.setTopN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.setTopN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setting the number of results retrieved by query</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>n</strong> &#8211; the number of results to be retrieved</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">query</span><span class="o">.</span><span class="n">setTopN</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="best.BESTQuery.toDataObj">
+<code class="descname">toDataObj</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery.toDataObj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery.toDataObj" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="best.getRelevantBioEntities">
+<code class="descclassname">best.</code><code class="descname">getRelevantBioEntities</code><span class="sig-paren">(</span><em>bestQuery</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#getRelevantBioEntities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.getRelevantBioEntities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function for retrieval from BEST</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bestQuery</strong> &#8211; BESTQuery</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">parsed objects (dict-BIOENTITY).</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>BIOENTITY (dict): {&#8220;entityName&#8221;:str, &#8220;rank&#8221;:int, &#8220;score&#8221;:float, &#8220;numArticles&#8221;:int, &#8220;abstracts&#8221;:[str]}</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bestQuery</span> <span class="o">=</span> <span class="n">BESTQuery</span><span class="p">(</span>  <span class="s2">&quot;lung cancer&quot;</span><span class="p">,</span>
+<span class="go">                            filterObjectName=&quot;gene&quot;,</span>
+<span class="go">                            topN=10,</span>
+<span class="go">                            noAbsTxt=True   )</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">relevantEntities</span> <span class="o">=</span> <span class="n">getRelevantBioEntities</span><span class="p">(</span><span class="n">bestQuery</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">best module</a><ul>
+<li><a class="reference internal" href="#biomedical-entity-query-api-v2">Biomedical entity query API v2</a><ul>
+<li><a class="reference internal" href="#api-description">API Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to dmis&#8217;s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/best.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/best.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
