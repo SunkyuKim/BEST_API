@@ -45,20 +45,22 @@
   <div class="section" id="module-best">
 <span id="best-module"></span><h1>best module<a class="headerlink" href="#module-best" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-BEST"></span><div class="section" id="biomedical-entity-query-api-v2">
-<h2>Biomedical entity query API v2<a class="headerlink" href="#biomedical-entity-query-api-v2" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Usage: Biomedical entity query API (simplified)</p>
-</div>
+<h2>Biomedical Entity Query API v2<a class="headerlink" href="#biomedical-entity-query-api-v2" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="api-description">
 <h3>API Description<a class="headerlink" href="#api-description" title="Permalink to this headline">¶</a></h3>
 <p>This API is for use of BEST(Biomedical Entity Search Tool) in various purposes.</p>
-<p>All users can access BEST at : <a class="reference external" href="http:/best.korea.ac.kr/">http:/best.korea.ac.kr/</a></p>
-<p>For bugs and inquiries, please contact: Jaewoo Kang(<a class="reference external" href="mailto:kangj&#37;&#52;&#48;korea&#46;ac&#46;kr">kangj<span>&#64;</span>korea<span>&#46;</span>ac<span>&#46;</span>kr</a>)</p>
+<p>All users can access BEST at : <a class="reference external" href="http://best.korea.ac.kr/">http://best.korea.ac.kr/</a></p>
+<p>For bugs and inquiries, please contact:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Jaewoo Kang(<a class="reference external" href="mailto:kangj&#37;&#52;&#48;korea&#46;ac&#46;kr">kangj<span>&#64;</span>korea<span>&#46;</span>ac<span>&#46;</span>kr</a>)</li>
+<li>Sunkyu Kim(<a class="reference external" href="mailto:sunkyu-kim&#37;&#52;&#48;korea&#46;ac&#46;kr">sunkyu-kim<span>&#64;</span>korea<span>&#46;</span>ac<span>&#46;</span>kr</a>)</li>
+</ul>
+</div></blockquote>
 <p>Reference : <a class="reference external" href="https://doi.org/10.1371/journal.pone.0164680">https://doi.org/10.1371/journal.pone.0164680</a></p>
 </div>
-<div class="section" id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="usage-examples">
+<h3>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h3>
 <p>To see ‘gene’s related ‘breast cancer’, use this sample code.</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">bestQuery</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">BESTQuery</span><span class="p">(</span><span class="s2">&quot;breast cancer&quot;</span><span class="p">,</span>
 <span class="go">                                filterObjectName=&quot;gene&quot;,</span>
@@ -141,6 +143,9 @@
 <span class="go">]</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="class-function-description">
+<h3>Class/Function Description<a class="headerlink" href="#class-function-description" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="best.BESTQuery">
 <em class="property">class </em><code class="descclassname">best.</code><code class="descname">BESTQuery</code><span class="sig-paren">(</span><em>querystr</em>, <em>filterObjectName='All Entity Type'</em>, <em>topN=20</em>, <em>noAbsTxt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/best.html#BESTQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#best.BESTQuery" title="Permalink to this definition">¶</a></dt>
@@ -302,9 +307,10 @@ Total 10 types are available.</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">best module</a><ul>
-<li><a class="reference internal" href="#biomedical-entity-query-api-v2">Biomedical entity query API v2</a><ul>
+<li><a class="reference internal" href="#biomedical-entity-query-api-v2">Biomedical Entity Query API v2</a><ul>
 <li><a class="reference internal" href="#api-description">API Description</a></li>
-<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#usage-examples">Usage Examples</a></li>
+<li><a class="reference internal" href="#class-function-description">Class/Function Description</a></li>
 </ul>
 </li>
 </ul>

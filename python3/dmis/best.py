@@ -3,26 +3,27 @@
     :platform: Unix, linux, Windows
 .. moduleauthor:: Sunkyu Kim <sunkyu-kim@korea.ac.kr>
 
-==================================
-Biomedical entity query API v2
-==================================
-
-.. note:: Usage: Biomedical entity query API (simplified)
+================================
+Biomedical Entity Query API v2
+================================
 
 API Description
 ================
 This API is for use of BEST(Biomedical Entity Search Tool) in various purposes.
 
 
-All users can access BEST at : http:/best.korea.ac.kr/
+All users can access BEST at : http://best.korea.ac.kr/
 
-For bugs and inquiries, please contact: Jaewoo Kang(kangj@korea.ac.kr)
+For bugs and inquiries, please contact:
+
+ * Jaewoo Kang(kangj@korea.ac.kr)
+ * Sunkyu Kim(sunkyu-kim@korea.ac.kr)
 
 Reference : https://doi.org/10.1371/journal.pone.0164680
 
 
-Examples
-==========
+Usage Examples
+===============
 To see ‘gene’s related ‘breast cancer’, use this sample code.
 
 >>> bestQuery = best.BESTQuery("breast cancer",
@@ -101,6 +102,9 @@ If you want to see other entity types, change filterObjectName.
     'rank' : 2},
     ...
 ]
+
+Class/Function Description
+===========================
 """
 import http
 #from http.client import HTTPException
