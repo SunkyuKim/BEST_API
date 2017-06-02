@@ -33,6 +33,7 @@ To see ‘gene’s related ‘breast cancer’, use this sample code.
 >>> print(searchResult)
 [{  'entityname' : 'ERBB2',
     'score' : 8098.43,
+    'PMIDs' : ['28427196', '28341751', '28199325'],
     'abstracts' : [
                 'Molecular-based cancer tests...',
                 'The molecular subtype of breast...'
@@ -41,6 +42,7 @@ To see ‘gene’s related ‘breast cancer’, use this sample code.
     'rank' : 1},
  {  'entityname' : 'ESR1',
     'score' : 7340.54,
+    'PMIDs' : ['27923387', '28274211', '26276891'],
     'abstracts' : [
                 'Several studies have shown that mammographic..',
                 'A shift towards less burdening and more...'
@@ -59,11 +61,13 @@ Changing noAbsTxt=True can make the process faster.
 >>> print(searchResult)
 [{  'entityname' : 'ERBB2',
     'score' : 8098.43,
+    'PMIDs' : [],
     'abstracts' : [],
     'numArticles':14537
     'rank' : 1},
  {  'entityname' : 'ESR1',
     'score' : 7340.54,
+    'PMIDs' : [],
     'abstracts' : [],
     'numArticles':18084
     'rank' : 2},
@@ -258,7 +262,7 @@ class BESTQuery():
         if noAbsTxt:
             strQuery = self.__besturl + "t=l&wt=xslt&tr=tmpl2.xsl" + "&otype=" + otype + "&rows=" + str(self.topN) + "&" + queryKeywords
         else:
-            strQuery = self.__besturl + "t=l&wt=xslt&tr=tmpl.xsl" + "&otype=" + otype + "&rows=" + str(self.topN) + "&" + queryKeywords
+            strQuery = self.__besturl + "t=l&wt=xslt&tr=tmpl_170602.xsl" + "&otype=" + otype + "&rows=" + str(self.topN) + "&" + queryKeywords
 
         return strQuery
 
@@ -338,7 +342,9 @@ def __makeDataFromBestQueryResult(resultStr):
         line = lines[i]
 
         if line.startswith("@@@"):
-            curData["abstracts"].append(line[3:].strip())
+            pmid, text = line[3:].strip().split("###")
+            curData["abstracts"].append(text)
+            curData["PMIDs"].append(pmid)
         else:
             if len(line.strip()) == 0 :
                 continue
@@ -348,8 +354,9 @@ def __makeDataFromBestQueryResult(resultStr):
 
             dataResult = line.split(" | ")
 
-            curData = {"rank":int(dataResult[0].strip()), "entityName":dataResult[1].strip(), "score":float(dataResult[2].strip()), "numArticles":int(dataResult[3].strip()), "abstracts":[]}
+            curData = {"rank":int(dataResult[0].strip()), "entityName":dataResult[1].strip(), "score":float(dataResult[2].strip()), "numArticles":int(dataResult[3].strip()), "abstracts":[], "PMIDs":[]}
 
     resultDataArr.append(curData)
 
     return resultDataArr
+
